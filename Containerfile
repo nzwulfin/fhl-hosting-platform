@@ -1,4 +1,4 @@
-FROM registry.redhat.io/rhel10/rhel-bootc:10.0
+FROM quay.io/hummingbird-community/bootc-os:latest
 
 # Install packages needed for containers, virtual machines, cockpit
 RUN dnf5 -y install qemu-kvm libvirt virt-install virt-viewer podman buildah skopeo cockpit cockpit-machines cockpit-podman cockpit-storaged cockpit-networkmanager cockpit-files NetworkManager-wifi mkpasswd firewalld vim libvirt-nss guestfs-tools pcp python3-pcp && dnf clean all 
