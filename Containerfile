@@ -1,13 +1,16 @@
 FROM quay.io/hummingbird-community/bootc-os:latest
 
-# Install packages needed for containers, virtual machines, cockpit
-RUN dnf5 -y install qemu-kvm libvirt virt-install virt-viewer podman buildah skopeo cockpit cockpit-machines cockpit-podman cockpit-storaged cockpit-networkmanager cockpit-files NetworkManager-wifi mkpasswd firewalld vim libvirt-nss guestfs-tools pcp python3-pcp && dnf clean all 
+# Install packages needed for virtual machines, containers, cockpit
+RUN dnf5 -y install qemu-kvm libvirt virt-install libvirt-nss \
+                    podman buildah skopeo \
+                    cockpit cockpit-machines cockpit-podman cockpit-storaged cockpit-networkmanager cockpit-files \
+                    vim-minimal && dnf clean all 
 
 # Passwordless sudo for admins
 RUN echo "%wheel        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/wheel-sudo
 
 # Enable some default services
-RUN systemctl enable podman.socket cockpit.socket fstrim.timer pmlogger.service
+RUN systemctl enable podman.socket cockpit.socket fstrim.timer
 
 # Mask the auto timer so we can control this in a downstream image or host
 RUN systemctl mask bootc-fetch-apply-updates.timer
